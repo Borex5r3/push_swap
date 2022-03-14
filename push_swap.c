@@ -6,17 +6,11 @@
 /*   By: adbaich <adbaich@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 13:16:20 by adbaich           #+#    #+#             */
-/*   Updated: 2022/03/12 08:00:40 by adbaich          ###   ########.fr       */
+/*   Updated: 2022/03/14 07:04:58 by adbaich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-void	ft_free(t_list **p)
-{
-	free(*p);
-	*p = NULL;
-}
 
 void	sa(t_list **head_a)
 {
@@ -240,14 +234,17 @@ void	sort_three(t_list **head_a)
 		sa(head_a);
 		rra(head_a);
 	}
-	else if ((tmp->content > tmp->next->next->content) && (tmp->next->content < tmp->next->next->content))
+	else if ((tmp->content > tmp->next->next->content)
+		&& (tmp->next->content < tmp->next->next->content))
 		ra(head_a);
-	else if ((tmp->next->content > tmp->next->next->content) && (tmp->content < tmp->next->next->content))
+	else if ((tmp->next->content > tmp->next->next->content)
+		&& (tmp->content < tmp->next->next->content))
 	{	
 		sa(head_a);
 		ra(head_a);
 	}
-	else if (tmp->content > tmp->next->next->content && tmp->content < tmp->next->content)
+	else if (tmp->content > tmp->next->next->content
+		&& tmp->content < tmp->next->content)
 		rra(head_a);
 }
 
@@ -277,9 +274,9 @@ int	small_num(t_list **head_a)
 	return (i);
 }
 
-size_t	lst_size(t_list *head_a)
+int	lst_size(t_list *head_a)
 {
-	size_t	size;
+	int	size;
 
 	size = 0;
 	while (head_a)
@@ -299,10 +296,29 @@ void	swap(int *a, int *b)
 	*b = c;
 }
 
-int	*sort_list(t_list *head_a, size_t size)
+int	sort_array(int *array, int size)
+{
+	int	is_sorted;
+	int	i;
+
+	is_sorted = 1;
+	i = 0;
+	while (i < size - 1)
+	{
+		if (array[i] > array[i + 1])
+		{
+			swap(array + i, array + i + 1);
+			is_sorted = 0;
+		}
+		i++;
+	}
+	return (is_sorted);
+}
+
+int	*sort_list(t_list *head_a, int size)
 {
 	int		*array;
-	size_t	i;
+	int		i;
 	char	is_sorted;
 
 	i = 0;
@@ -317,19 +333,7 @@ int	*sort_list(t_list *head_a, size_t size)
 	}
 	is_sorted = 0;
 	while (!is_sorted)
-	{
-		is_sorted = 1;
-		i = 0;
-		while (i < size - 1)
-		{
-			if (array[i] > array[i + 1])
-			{
-				swap(array + i, array + i + 1);
-				is_sorted = 0;
-			}
-			i++;
-		}
-	}
+		is_sorted = sort_array(array, size);
 	return (array);
 }
 
@@ -346,7 +350,7 @@ int	find_index(int *array, int content)
 void	fill_index(t_list **head_a)
 {
 	t_list	*tmp;
-	size_t	size;
+	int		size;
 	int		*array;
 
 	size = lst_size(*head_a);
@@ -408,107 +412,149 @@ void	sort_five(t_list **head_a, t_list **head_b)
 	pa(head_a, head_b);
 }
 
+void	radix_fill_stack_b(t_list **head_a, t_list **head_b, int size, int i)
+{
+	int		j;
+	t_list	*tmp;
+	int		num;
+
+	j = 0;
+	while (j < size)
+	{
+		tmp = *head_a;
+		num = tmp->index;
+		if (((num >> i) & 1) == 1)
+			ra(head_a);
+		else
+			pb(head_a, head_b);
+		j++;
+	}
+}
+
+void	radix_sort(t_list **head_a, t_list **head_b, int size)
+{
+	int		i;
+	int		max;
+	int		max_bits;
+
+	max = size - 1;
+	max_bits = 0;
+	i = 0;
+	while ((max >> max_bits))
+			max_bits++;
+	while (i < max_bits)
+	{
+		radix_fill_stack_b(head_a, head_b, size, i);
+		while (*head_b)
+			pa(head_a, head_b);
+		i++;
+	}
+}
+
+void	small_sort(t_list **head_a, t_list **head_b, int size)
+{
+	if (size == 2)
+	{
+		ra(head_a);
+		exit(0);
+	}
+	else if (size == 3)
+	{
+		sort_three(head_a);
+		exit(0);
+	}
+	else if (size == 4)
+	{
+		sort_four(head_a, head_b);
+		exit(0);
+	}
+	else if (size == 5)
+	{
+		sort_five(head_a, head_b);
+		exit(0);
+	}
+}
+
+void	check_duplicate(t_list **head_a)
+{
+	t_list	*tmp;
+	t_list	*tmp1;
+	int		num_check;
+
+	tmp = *head_a;
+	while (tmp->next)
+	{
+		num_check = tmp->content;
+		tmp1 = tmp->next;
+		while (tmp1)
+		{
+			if (tmp1->content == num_check)
+			{
+				printf("Error : dupl\n");
+				exit(1);
+			}
+			tmp1 = tmp1->next;
+		}
+		tmp = tmp->next;
+	}
+}
+
+void	fill_lst(t_list **head_a, char **splt, int j)
+{
+	t_list	*new;
+
+	while (j >= 0)
+	{
+		if (!*head_a)
+			*head_a = ft_lstnew(ft_atoi(splt[j]));
+		else
+		{
+			new = ft_lstnew(ft_atoi(splt[j]));
+			ft_lstadd_front(head_a, new);
+		}
+		j--;
+	}
+}
+
+void	split_and_create_lst(t_list **head_a, char **av, int ac)
+{
+	char	**splt;
+	int		j;
+	int		i;
+
+	i = ac - 1;
+	while (i > 0)
+	{	
+		splt = ft_split(av[i], ' ');
+		j = 0;
+		while (splt[j])
+			j++;
+		j--;
+		fill_lst(head_a, splt, j);
+		i--;
+	}
+}
+
 int	main(int ac, char **av)
 {
 	int		i;
 	t_list	*head_a;
 	t_list	*head_b;
-	t_list	*tmp;
-	t_list	*tmp1;
-	t_list	*new;
 	int		size;
-	int		max;
-	int		max_bits;
-	int		num_check;
-	int		j;
-	int		num;
 
 	i = ac - 1;
-	size = i;
-	max = size - 1;
-	max_bits = 0;
 	head_a = NULL;
 	head_b = NULL;
-	if (ac > 2)
+	if (ac >= 2)
 	{
-		while (i > 0)
-		{
-			if (!head_a)
-				head_a = ft_lstnew(ft_atoi(av[i]));
-			else
-			{
-				new = ft_lstnew(ft_atoi(av[i]));
-				ft_lstadd_front(&head_a, new);
-			}
-			i--;
-		}
-		tmp = head_a;
-		while (tmp->next)
-		{
-			num_check = tmp->content;
-			tmp1 = tmp->next;
-			while (tmp1)
-			{
-				if (tmp1->content == num_check)
-				{
-					printf("Error\n");
-					exit(1);
-				}
-				tmp1 = tmp1->next;
-			}
-			tmp = tmp->next;
-		}
+		split_and_create_lst(&head_a, av, ac);
+		size = lst_size(head_a);
+		check_duplicate(&head_a);
 		if (is_sorted(&head_a))
 			return (0);
-		tmp = head_a;
-		if (ac == 3)
-		{
-			ra(&head_a);
-			return (0);
-		}
-		else if (ac == 4)
-		{
-			sort_three(&head_a);
-			return (0);
-		}
-		else if (ac == 5)
-		{
-			sort_four(&head_a, &head_b);
-			return (0);
-		}
-		else if (ac == 6)
-		{
-			sort_five(&head_a, &head_b);
-			return (0);
-		}
-		i = 0;
-		tmp = head_a;
-		while (tmp)
-		{
-			tmp->index = 0;
-			tmp = tmp->next;
-		}
+		small_sort(&head_a, &head_b, size);
 		fill_index(&head_a);
-		while ((max >> max_bits))
-			max_bits++;
-		while (i < max_bits)
-		{
-			j = 0;
-			while (j < size)
-			{
-				tmp = head_a;
-				num = tmp->index;
-				if (((num >> i) & 1) == 1)
-					ra(&head_a);
-				else
-					pb(&head_a, &head_b);
-				j++;
-			}
-			while (head_b)
-				pa(&head_a, &head_b);
-			i++;
-		}
-		free (new);
+		radix_sort(&head_a, &head_b, size);
 	}
 	return (0);
 }

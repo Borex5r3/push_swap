@@ -6,13 +6,13 @@
 /*   By: adbaich <adbaich@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 18:47:14 by adbaich           #+#    #+#             */
-/*   Updated: 2022/03/08 18:40:29 by adbaich          ###   ########.fr       */
+/*   Updated: 2022/03/14 04:18:19 by adbaich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static int	check(size_t a, int s)
+static int	check(long a, int s)
 {
 	if (a <= 2147483647)
 		return (a * s);
@@ -20,7 +20,7 @@ static int	check(size_t a, int s)
 		return (-2147483648);
 	else
 	{
-		printf("Error\n");
+		printf("Error: range int\n");
 		exit(1);
 	}
 }
@@ -29,7 +29,7 @@ int	ft_atoi(const char *str)
 {
 	int		i;
 	int		s;
-	size_t	a;
+	long	a;
 
 	i = 0;
 	s = 1;
@@ -50,7 +50,8 @@ int	ft_atoi(const char *str)
 	}
 	if (str[i])
 	{
-		printf("Error\n");
+		printf("%s ==== bad one!!\n", str);	
+		printf("Error: only int\n");
 		exit(1);
 	}
 	return (check(a, s));

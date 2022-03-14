@@ -6,7 +6,7 @@
 /*   By: adbaich <adbaich@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 18:47:14 by adbaich           #+#    #+#             */
-/*   Updated: 2022/03/14 04:18:19 by adbaich          ###   ########.fr       */
+/*   Updated: 2022/03/14 08:11:00 by adbaich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,20 @@ static int	check(long a, int s)
 		return (-2147483648);
 	else
 	{
-		printf("Error: range int\n");
+		printf("Error\n");
 		exit(1);
 	}
+}
+
+static int	signal_num(char c, int *i)
+{
+	if (c == '-' || c == '+')
+	{
+		*i = *i + 1;
+		if (c == '-')
+			return (-1);
+	}
+	return (1);
 }
 
 int	ft_atoi(const char *str)
@@ -32,17 +43,11 @@ int	ft_atoi(const char *str)
 	long	a;
 
 	i = 0;
-	s = 1;
 	a = 0;
 	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
 		|| str[i] == '\f' || str[i] == '\r' || str[i] == ' ')
 		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			s = -1;
-		i++;
-	}
+	s = signal_num(str[i], &i);
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		a = a * 10 + (str[i] - 48);
@@ -50,8 +55,7 @@ int	ft_atoi(const char *str)
 	}
 	if (str[i])
 	{
-		printf("%s ==== bad one!!\n", str);	
-		printf("Error: only int\n");
+		printf("Error\n");
 		exit(1);
 	}
 	return (check(a, s));

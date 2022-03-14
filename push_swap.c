@@ -6,7 +6,7 @@
 /*   By: adbaich <adbaich@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 13:16:20 by adbaich           #+#    #+#             */
-/*   Updated: 2022/03/14 07:04:58 by adbaich          ###   ########.fr       */
+/*   Updated: 2022/03/14 08:11:08 by adbaich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -490,7 +490,7 @@ void	check_duplicate(t_list **head_a)
 		{
 			if (tmp1->content == num_check)
 			{
-				printf("Error : dupl\n");
+				printf("Error\n");
 				exit(1);
 			}
 			tmp1 = tmp1->next;

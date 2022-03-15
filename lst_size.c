@@ -1,20 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
+/*   lst_size.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adbaich <adbaich@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/19 20:45:28 by adbaich           #+#    #+#             */
-/*   Updated: 2022/03/14 10:21:13 by adbaich          ###   ########.fr       */
+/*   Created: 2022/03/15 09:50:16 by adbaich           #+#    #+#             */
+/*   Updated: 2022/03/15 09:56:06 by adbaich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap_bonus.h"
 #include "push_swap.h"
 
-void	ft_lstadd_front(t_list **lst, t_list *new)
+int	lst_size(t_list *head_a)
 {
-	new->next = *lst;
-	*lst = new;
+	int	size;
+
+	size = 0;
+	while (head_a)
+	{
+		size++;
+		head_a = head_a->next;
+	}
+	return (size);
 }

@@ -3,13 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adbaich <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: adbaich <adbaich@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 12:12:09 by adbaich           #+#    #+#             */
-/*   Updated: 2021/11/18 10:40:58 by adbaich          ###   ########.fr       */
+/*   Updated: 2022/03/14 10:21:52 by adbaich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include<stdlib.h>
+
+#include "push_swap_bonus.h"
+#include "push_swap.h"
 
 static int	check(char const s, char c)
 {

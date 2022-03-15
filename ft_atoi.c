@@ -6,10 +6,11 @@
 /*   By: adbaich <adbaich@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 18:47:14 by adbaich           #+#    #+#             */
-/*   Updated: 2022/03/14 08:11:00 by adbaich          ###   ########.fr       */
+/*   Updated: 2022/03/15 10:03:27 by adbaich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "push_swap_bonus.h"
 #include "push_swap.h"
 
 static int	check(long a, int s)
@@ -25,9 +26,16 @@ static int	check(long a, int s)
 	}
 }
 
-static int	signal_num(char c, int *i)
+static int	check_num(char c)
 {
-	if (c == '-' || c == '+')
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
+}
+
+static int	signal_num(char c, char num, int *i)
+{
+	if ((c == '-' || c == '+') && check_num(num))
 	{
 		*i = *i + 1;
 		if (c == '-')
@@ -47,7 +55,7 @@ int	ft_atoi(const char *str)
 	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
 		|| str[i] == '\f' || str[i] == '\r' || str[i] == ' ')
 		i++;
-	s = signal_num(str[i], &i);
+	s = signal_num(str[i], str[i + 1], &i);
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		a = a * 10 + (str[i] - 48);
